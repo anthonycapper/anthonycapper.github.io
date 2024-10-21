@@ -97,71 +97,66 @@
 </div>
 
 <script>
-
-const formElements = [document.getElementById("registrationForm")]; 
-
-for (let i = 0; i < formElements.length; i++) {
-    formElements[i].addEventListener("submit", function (event) {
-        event.preventDefault(); 
-        console.log("Form submitted successfully!");
-    });
-}
-
-
-    const user = {
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value,
-      dob: document.getElementById("dob").value,
-    };
-
-    if (!user.firstName || !user.lastName || !user.email || !user.password || !user.dob) {
-      alert("Please fill out the following sections before submitting.");
-      return;
-    }
-
-    let validEmail = false;
-    for (let i = 0; i < user.email.length; i++) {
-        if (user.email[i] === '@') {
-            validEmail = true;
-            break; 
-        }
-    }
-
-    if (!validEmail) {
-        alert("Email must contain the '@' symbol.");
-        return; 
-    }
-
-
-    let validPassword = false;
-    for (let i = 0; i < user.password.length; i++) {
-        if (user.password[i] === '!' || user.password[i] === '?') {
-            validPassword = true;
-            break; 
-        }
-    }
-
-    if (!validPassword) {
-        alert("Password must contain either '!' or '?'");
-        return; 
-    }
-
-    var maskedPassword = "";
-    for (var i = 0; i < user.password.length; i++) {
-        maskedPassword += "*";
-    }
-
-    document.getElementById("displayName").textContent = `${user.firstName} ${user.lastName}`;
-    document.getElementById("displayEmail").textContent = user.email;
-    document.getElementById("displayDob").textContent = user.dob;
-    document.getElementById("displayPassword").textContent = maskedPassword;
-
-    document.getElementById("result").classList.remove("hidden");
-  ;
-</script>
-</body>
-
-
-</html>
+  const formElements = [document.getElementById("registrationForm")]; 
+  
+  for (let i = 0; i < formElements.length; i++) {
+      formElements[i].addEventListener("submit", function (event) {
+          event.preventDefault();
+          console.log("Form submitted successfully!");
+          
+          const user = {
+              firstName: document.getElementById("firstName").value.trim(),
+              lastName: document.getElementById("lastName").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              password: document.getElementById("password").value.trim(),
+              dob: document.getElementById("dob").value.trim(),
+          };
+  
+          if (!user.firstName || !user.lastName || !user.email || !user.password || !user.dob) {
+              alert("Please fill out the following sections before submitting.");
+              return;
+          }
+  
+          let validEmail = false;
+          for (let i = 0; i < user.email.length; i++) {
+              if (user.email[i] === '@') {
+                  validEmail = true;
+                  break;
+              }
+          }
+  
+          if (!validEmail) {
+              alert("Email must contain the '@' symbol.");
+              return;
+          }
+  
+          let validPassword = false;
+          for (let i = 0; i < user.password.length; i++) {
+              if (user.password[i] === '!' || user.password[i] === '?') {
+                  validPassword = true;
+                  break;
+              }
+          }
+  
+          if (!validPassword) {
+              alert("Password must contain either '!' or '?'");
+              return;
+          }
+  
+          let maskedPassword = "";
+          for (let i = 0; i < user.password.length; i++) {
+              maskedPassword += "*";
+          }
+  
+          document.getElementById("displayName").textContent = `${user.firstName} ${user.lastName}`;
+          document.getElementById("displayEmail").textContent = user.email;
+          document.getElementById("displayDob").textContent = user.dob;
+          document.getElementById("displayPassword").textContent = maskedPassword;
+  
+          document.getElementById("result").classList.remove("hidden");
+      });
+  }
+  </script>
+  </body>
+  </html>
+  
