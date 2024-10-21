@@ -58,41 +58,110 @@
 <h2></h2>
 
 
-<form class="row g-3 needs-validation" novalidate>
-    <div class="col-md-4 position-relative">
-      <label for="validationTooltip01" class="form-label">First name</label>
-      <input type="text" class="form-control" id="validationTooltip01" placeholder="First name" required>
-      <div class="valid-tooltip">Looks good!
-      </div>
-    </div>
-    <div class="col-md-4 position-relative">
-      <label for="validationTooltip02" class="form-label">Last name</label>
-      <input type="text" class="form-control" id="validationTooltip02" placeholder="Last name" required>
-      <div class="valid-tooltip">Looks good!
-      </div>
-    </div>
+<form class="row g-3 needs-validation" id="registrationForm" novalidate>
+  <div class="col-md-4">
+    <label for="firstName" class="form-label">First Name</label>
+    <input type="text" class="form-control" id="firstName" required />
+  </div>
+  <div class="col-md-4">
+    <label for="lastName" class="form-label">Last Name</label>
+    <input type="text" class="form-control" id="lastName" required />
+  </div>
 
-    <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-      </div>
- 
-      <form class="row g-3 needs-validation" novalidate>
-        <div class="col-md-4 position-relative">
-          <label for="validationTooltip01" class="form-label">Date Of Birth</label>
-          <input type="text" class="form-control" id="validationTooltip01" placeholder="Date Of Birth" required>
-  
-          <hr style="width: 320%; margin-top:30px;"> 
+  <div class="form-floating mb-3">
+    <input type="email" class="form-control" id="email" placeholder="name@example.com" required />
+    <label for="email">Email Address</label>
+  </div>
 
-    
-          <div class="col-12">
-            <button class="btn btn-primary" type="submit">Submit form</button>
-          </div>
+  <div class="form-floating mb-3">
+    <input type="password" class="form-control" id="password" placeholder="Password" required />
+    <label for="password">Password</label>
+  </div>
 
+  <div class="col-md-4">
+    <label for="dob" class="form-label">Date of Birth</label>
+    <input type="date" class="form-control" id="dob" required />
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>
+
+<div id="result" class="hidden mt-4">
+  <h2>User information:</h2>
+  <p><strong>Name:</strong> <span id="displayName"></span></p>
+  <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+  <p><strong>Date of Birth:</strong> <span id="displayDob"></span></p>
+  <p><strong>Password:</strong> <span id="displayPassword"></span></p>
+</div>
+
+<script>
+
+const formElements = [document.getElementById("registrationForm")]; 
+
+for (let i = 0; i < formElements.length; i++) {
+    formElements[i].addEventListener("submit", function (event) {
+        event.preventDefault(); 
+        console.log("Form submitted successfully!");
+    });
+}
+
+
+    const user = {
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      dob: document.getElementById("dob").value,
+    };
+
+    if (!user.firstName || !user.lastName || !user.email || !user.password || !user.dob) {
+      alert("Please fill out the following sections before submitting.");
+      return;
+    }
+
+    let validEmail = false;
+    for (let i = 0; i < user.email.length; i++) {
+        if (user.email[i] === '@') {
+            validEmail = true;
+            break; 
+        }
+    }
+
+    if (!validEmail) {
+        alert("Email must contain the '@' symbol.");
+        return; 
+    }
+
+
+    let validPassword = false;
+    for (let i = 0; i < user.password.length; i++) {
+        if (user.password[i] === '!' || user.password[i] === '?') {
+            validPassword = true;
+            break; 
+        }
+    }
+
+    if (!validPassword) {
+        alert("Password must contain either '!' or '?'");
+        return; 
+    }
+
+    var maskedPassword = "";
+    for (var i = 0; i < user.password.length; i++) {
+        maskedPassword += "*";
+    }
+
+    document.getElementById("displayName").textContent = `${user.firstName} ${user.lastName}`;
+    document.getElementById("displayEmail").textContent = user.email;
+    document.getElementById("displayDob").textContent = user.dob;
+    document.getElementById("displayPassword").textContent = maskedPassword;
+
+    document.getElementById("result").classList.remove("hidden");
+  ;
+</script>
+</body>
 
 
 </html>
