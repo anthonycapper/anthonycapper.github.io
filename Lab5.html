@@ -103,7 +103,6 @@
       formElements[i].addEventListener("submit", function (event) {
           event.preventDefault();
           console.log("Form submitted successfully!");
-          
           const user = {
               firstName: document.getElementById("firstName").value.trim(),
               lastName: document.getElementById("lastName").value.trim(),
@@ -143,15 +142,15 @@
               return;
           }
   
-          let maskedPassword = "";
+          let hiddenpassword = "";
           for (let i = 0; i < user.password.length; i++) {
-              maskedPassword += "*";
+              hiddenpassword += "*";
           }
   
           document.getElementById("displayName").textContent = `${user.firstName} ${user.lastName}`;
           document.getElementById("displayEmail").textContent = user.email;
           document.getElementById("displayDob").textContent = user.dob;
-          document.getElementById("displayPassword").textContent = maskedPassword;
+          document.getElementById("displayPassword").textContent = hiddenpassword;
   
           document.getElementById("result").classList.remove("hidden");
       });
