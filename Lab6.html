@@ -55,52 +55,59 @@
         style="background-color: lightgrey; padding: 10px; border-radius: 10px"
       ></h2>
 
-      <a class="btn btn-primary btn-lg" href="#" role="button" id="fetchButton"
-        >Click for Cat Facts!</a
-      >
-
-      <table id="factsTable">
+      <button type="button" class="btn-primary btn-lg" id="fetchButton">
+        Click for Cat Facts!
+      </button>
+    
+      <table id="factsTable" border="1" cellspacing="0" cellpadding="10">
         <thead>
           <tr>
             <th>Fact ID</th>
-            <th>Fact</th>
+            <th>Cat Fact</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-
+    
       <div>
         <h2>Cat Image</h2>
-        <img id="image" src="placeholder.jpg" alt="Cat Image" width="300" />
+        <img
+          id="image"
+          src="https://via.placeholder.com/300"
+          alt="Cat Image"
+          width="300"
+        />
       </div>
-    </div>
-
-    <script>
+    
+      <script>
         async function fetchCatFacts() {
           const url = "https://brianobruno.github.io/cats.json";
-          try {
-            const response = await fetch(url);
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const myObj = await response.json();
-            const sortedFacts = myObj.all.sort((a, b) => a.factId - b.factId);
-            const tableBody = document.querySelector("#factsTable tbody");
-            tableBody.innerHTML = "";
+          const options = { method: "GET" };
     
-            sortedFacts.forEach((fact) => {
-              tableBody.innerHTML += `
-                <tr>
-                  <td>${fact.factId}</td>
-                  <td>${fact.fact}</td>
-                </tr>
-              `;
-            });
+          const response = await fetch(url, options);
+          const result = await response.text();
+          const myObj = JSON.parse(result);
     
-            document.getElementById("image").src =
-              sortedFacts[0].imageUrl || "placeholder.jpg";
-          } catch (error) {
-            console.error("Error fetching cat facts:", error);
+          const factsArray = myObj.facts;
+          const catPhotoUrl = myObj.catPhoto;
+    
+          if (catPhotoUrl) {
+            document.getElementById("image").src = catPhotoUrl;
+          }
+    
+          const tableBody = document.querySelector("#factsTable tbody");
+          tableBody.innerHTML = "";
+    
+          for (let i = 0; i < factsArray.length; i++) {
+            const fact = factsArray[i];
+            const factId = fact.id || i + 1;  // Use index as fallback if 'id' is missing
+            const factText = fact.text || "No fact available";
+    
+            const row = `<tr>
+                           <td>${factId}</td>
+                           <td>${factText}</td>
+                         </tr>`;
+            tableBody.innerHTML += row;
           }
         }
     
@@ -108,5 +115,6 @@
           .getElementById("fetchButton")
           .addEventListener("click", fetchCatFacts);
       </script>
+    </div>
   </body>
 </html>
