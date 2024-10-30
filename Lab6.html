@@ -58,17 +58,16 @@
       <button type="button" class="btn-primary btn-lg" id="fetchButton">
         Click for Cat Facts!
       </button>
-    
-      <table id="factsTable" border="1" cellspacing="0" cellpadding="10">
+
+      <table border="1" cellspacing="0" cellpadding="10">
         <thead>
           <tr>
             <th>Fact ID</th>
             <th>Cat Fact</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="factsTableBody"></tbody>
       </table>
-    
       <div>
         <h2>Cat Image</h2>
         <img
@@ -78,39 +77,40 @@
           width="300"
         />
       </div>
-    
+
       <script>
         async function fetchCatFacts() {
           const url = "https://brianobruno.github.io/cats.json";
           const options = { method: "GET" };
-    
+
           const response = await fetch(url, options);
           const result = await response.text();
           const myObj = JSON.parse(result);
-    
+
           const factsArray = myObj.facts;
           const catPhotoUrl = myObj.catPhoto;
-    
+
           if (catPhotoUrl) {
             document.getElementById("image").src = catPhotoUrl;
           }
-    
-          const tableBody = document.querySelector("#factsTable tbody");
+
+          const tableBody = document.getElementById("factsTableBody");
           tableBody.innerHTML = "";
-    
+
           for (let i = 0; i < factsArray.length; i++) {
             const fact = factsArray[i];
-            const factId = fact.id || i + 1;  // Use index as fallback if 'id' is missing
+            const factId = fact.id || i + 1;
             const factText = fact.text || "No fact available";
-    
-            const row = `<tr>
-                           <td>${factId}</td>
-                           <td>${factText}</td>
-                         </tr>`;
+
+            let row = "<tr>";
+            row += "<td>" + factId + "</td>";
+            row += "<td>" + factText + "</td>";
+            row += "</tr>";
+
             tableBody.innerHTML += row;
           }
         }
-    
+
         document
           .getElementById("fetchButton")
           .addEventListener("click", fetchCatFacts);
