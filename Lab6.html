@@ -90,6 +90,8 @@
           const factsArray = myObj.facts;
           const catPhotoUrl = myObj.catPhoto;
 
+          factsArray.sort((a, b) => a.factId - b.factId);
+
           if (catPhotoUrl) {
             document.getElementById("image").src = catPhotoUrl;
           }
@@ -99,12 +101,10 @@
 
           for (let i = 0; i < factsArray.length; i++) {
             const fact = factsArray[i];
-            const factId = fact.id || i + 1;
-            const factText = fact.text || "No fact available";
 
             let row = "<tr>";
-            row += "<td>" + factId + "</td>";
-            row += "<td>" + factText + "</td>";
+            row += "<td>" + fact.factId + "</td>";
+            row += "<td>" + fact.text + "</td>";
             row += "</tr>";
 
             tableBody.innerHTML += row;
