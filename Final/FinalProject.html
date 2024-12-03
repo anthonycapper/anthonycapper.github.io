@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Final Project</title>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <title>Final Project</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -24,11 +24,32 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
-        background-position: center center;
+        background-position: center;
         overflow: hidden;
       }
+
       .btn {
         background-color: darkgray;
+      }
+
+      @media (max-width: 768px) {
+        .nav-item a {
+          font-size: 1.2rem !important;
+        }
+
+        h1 {
+          font-size: 1.5rem !important;
+          position: static !important;
+          text-align: center;
+        }
+
+        footer {
+          font-size: 0.8rem !important;
+        }
+
+        .card {
+          width: 90% !important;
+        }
       }
     </style>
   </head>
@@ -46,73 +67,86 @@
           left: 20px;
         "
       >
-        <ul class="navbar-nav" style="gap: 15px; list-style: none">
-          <li class="nav-item btn btn-hover shadow-lg">
-            <a
-              class="nav-link active"
-              href="FinalProject.html"
-              style="
-                color: black;
-                font-size: 1.5rem;
-                font-weight: bold;
-                font-family: Didot, serif;
-              "
-              >Home</a
-            >
-          </li>
-          <li class="nav-item btn btn-hover shadow-lg">
-            <a
-              class="nav-link"
-              href="RandomQuotes.html"
-              style="
-                color: black;
-                font-size: 1.5rem;
-                font-weight: bold;
-                font-family: Didot, serif;
-              "
-              >Random Quote</a
-            >
-          </li>
-          <li class="nav-item btn btn-hover shadow-lg">
-            <a
-              class="nav-link"
-              href="AllQuotes.html"
-              style="
-                color: black;
-                font-size: 1.5rem;
-                font-weight: bold;
-                font-family: Didot, serif;
-              "
-              >All Quotes</a
-            >
-          </li>
-          <li class="nav-item btn btn-hover shadow-lg">
-            <a
-              class="nav-link"
-              href="CharacterById.html"
-              style="
-                color: black;
-                font-size: 1.5rem;
-                font-weight: bold;
-                font-family: Didot, serif;
-              "
-              >Find a Character</a
-            >
-          </li>
-          <li class="nav-item btn btn-hover shadow-lg">
-            <a
-              class="nav-link"
-              href="EpisodeById.html"
-              style="
-                color: black;
-                font-size: 1.5rem;
-                font-weight: bold;
-                font-family: Didot, serif;
-              "
-              >Find an Episode</a
-            >
-          </li>
-        </ul>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" style="gap: 15px; list-style: none">
+            <li class="nav-item btn btn-hover shadow-lg">
+              <a
+                class="nav-link active"
+                href="FinalProject.html"
+                style="
+                  color: black;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  font-family: Didot, serif;
+                "
+                >Home</a
+              >
+            </li>
+            <li class="nav-item btn btn-hover shadow-lg">
+              <a
+                class="nav-link"
+                href="RandomQuotes.html"
+                style="
+                  color: black;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  font-family: Didot, serif;
+                "
+                >Random Quote</a
+              >
+            </li>
+            <li class="nav-item btn btn-hover shadow-lg">
+              <a
+                class="nav-link"
+                href="AllQuotes.html"
+                style="
+                  color: black;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  font-family: Didot, serif;
+                "
+                >All Quotes</a
+              >
+            </li>
+            <li class="nav-item btn btn-hover shadow-lg">
+              <a
+                class="nav-link"
+                href="CharacterById.html"
+                style="
+                  color: black;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  font-family: Didot, serif;
+                "
+                >Find a Character</a
+              >
+            </li>
+            <li class="nav-item btn btn-hover shadow-lg">
+              <a
+                class="nav-link"
+                href="EpisodeById.html"
+                style="
+                  color: black;
+                  font-size: 1.5rem;
+                  font-weight: bold;
+                  font-family: Didot, serif;
+                "
+                >Find an Episode</a
+              >
+            </li>
+          </ul>
+        </div>
       </nav>
     </div>
 
@@ -168,14 +202,10 @@
       <b> Werewolves </b>
     </h1>
 
-    <<footer class="bg-dark text-white text-center py-3 fixed-bottom">
+    <footer class="bg-dark text-white text-center py-3 fixed-bottom">
       <div class="container">
         <span
-          style="
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-          "
+          style="font-size: 0.9rem; font-weight: bold; letter-spacing: 0.5px"
         >
           Anthony Capper | FinalProject | Nov 23rd 2024
         </span>
