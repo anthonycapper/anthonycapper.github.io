@@ -25,6 +25,7 @@
         background-attachment: fixed;
         background-size: cover;
         background-position: center center;
+        overflow: hidden;
       }
       .btn {
         background-color: darkgray;
@@ -167,37 +168,39 @@
       <b> Werewolves </b>
     </h1>
 
-    <footer class="bg-black text-white text-center py-3 fixed-bottom">
+    <<footer class="bg-dark text-white text-center py-3 fixed-bottom">
       <div class="container">
-        <span class="d-block" style="font-size: 1.1rem; font-weight: bold; letter-spacing: 1px;">
+        <span
+          style="
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+          "
+        >
           Anthony Capper | FinalProject | Nov 23rd 2024
         </span>
       </div>
     </footer>
-    
 
-    <div style="position: relative; height: 600px">
-      <p
-        style="
-          position: absolute;
-          top: 60%;
-          left: 49%;
-          transform: translate(-50%, -50%);
-          background-color: lightgrey;
-          padding: 20px;
-          border-radius: 10px;
-          width: 80;
-          text-align: center;
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 1.2rem;
-        "
+    <div class="d-flex justify-content-center align-items-center vh-100">
+      <div
+        class="card shadow-lg p-4 bg-light"
+        style="max-width: 600px; text-align: center; border-radius: 10px"
       >
-        Welcome to the Supernatural! If you want to learn about various
-        creatures you're in the right place. Many monsters like demons, angels,
-        werewolves, and even vampires exist. Sam and Dean Winchester fight
-        theses monsters to keep the stake of humanity alive. Will there be a
-        tomorrow?
-      </p>
+        <p
+          class="mb-0"
+          style="
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2rem;
+          "
+        >
+          Welcome to the Supernatural! If you want to learn about various
+          creatures, you're in the right place. Many monsters like demons,
+          angels, werewolves, and even vampires exist. Sam and Dean Winchester
+          fight these monsters to keep the stake of humanity alive. Will there
+          be a tomorrow?
+        </p>
+      </div>
     </div>
   </body>
 </html>

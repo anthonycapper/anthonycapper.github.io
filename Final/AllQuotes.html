@@ -35,7 +35,9 @@
         margin-right: auto;
         overflow-y: auto;
         max-height: 70vh;
+        margin-bottom: 50px;
       }
+
       .btn {
         background-color: darkgray;
         color: black;
@@ -137,14 +139,15 @@
       </nav>
     </div>
 
-    <footer class="bg-black text-white text-center py-3 fixed-bottom">
+    <footer class="bg-dark text-white text-center py-3 fixed-bottom">
       <div class="container">
-        <span class="d-block" style="font-size: 1.1rem; font-weight: bold; letter-spacing: 1px;">
+        <span
+          style="font-size: 0.9rem; font-weight: bold; letter-spacing: 0.5px"
+        >
           Anthony Capper | FinalProject | Nov 23rd 2024
         </span>
       </div>
     </footer>
-    
 
     <div
       class="container text-center"
@@ -165,149 +168,152 @@
         </p>
       </div>
       <div id="allQuotesDisplay" class="quote-box"></div>
-      <div class="d-flex justify-content-center" style="margin-top: 10px">
+      <div
+        class="d-flex justify-content-center"
+        style="margin-top: 10px; margin-bottom: 80px"
+      >
         <button id="loadMoreButton" class="btn btn-dark" style="display: none">
           Load More
         </button>
       </div>
-    </div>
 
-    <script>
-      let nextUrl = null;
-      let allQuotes = [];
+      <script>
+        let nextUrl = null;
+        let allQuotes = [];
 
-      async function fetchQuotes(url) {
-        const response = await fetch(url);
+        async function fetchQuotes(url) {
+          const response = await fetch(url);
 
-        if (response.ok) {
-          const result = await response.json();
-          const episodes = result.data || [];
-          nextUrl = result.next || null;
+          if (response.ok) {
+            const result = await response.json();
+            const episodes = result.data || [];
+            nextUrl = result.next || null;
 
-          allQuotes = allQuotes.concat(episodes);
+            allQuotes = allQuotes.concat(episodes);
 
-          const loadMoreButton = document.getElementById("loadMoreButton");
-          loadMoreButton.style.display = nextUrl ? "block" : "none";
+            const loadMoreButton = document.getElementById("loadMoreButton");
+            loadMoreButton.style.display = nextUrl ? "block" : "none";
 
-          renderQuotes(episodes);
-        } else {
-          console.error(
-            "Failed to fetch quotes. HTTP Status:",
-            response.status
+            renderQuotes(episodes);
+          } else {
+            console.error(
+              "Failed to fetch quotes. HTTP Status:",
+              response.status
+            );
+          }
+        }
+
+        function renderQuotes(episodes) {
+          const allQuotesDisplay = document.getElementById("allQuotesDisplay");
+          let quoteIndex = allQuotesDisplay.getElementsByTagName("li").length;
+
+          let quotesHTML = allQuotesDisplay.innerHTML;
+
+          for (let i = 0; i < episodes.length; i++) {
+            const episode = episodes[i];
+
+            for (let key in episode) {
+              if (key.startsWith("line_")) {
+                const line = episode[key];
+                const quoteText =
+                  line && line.quote ? line.quote : "No quote available.";
+                const quoteAuthor =
+                  line && line.character && line.character.name
+                    ? line.character.name
+                    : "Unknown";
+
+                quoteIndex++;
+                quotesHTML +=
+                  "<li>" +
+                  "<p><strong>" +
+                  quoteIndex +
+                  '.</strong> "' +
+                  quoteText +
+                  '"</p>' +
+                  "<p>— " +
+                  quoteAuthor +
+                  "</p>" +
+                  "</li>";
+              }
+            }
+          }
+
+          allQuotesDisplay.innerHTML = quotesHTML;
+        }
+
+        function sortQuotes() {
+          const allQuotesDisplay = document.getElementById("allQuotesDisplay");
+          const listItems = Array.from(
+            allQuotesDisplay.getElementsByTagName("li")
           );
-        }
-      }
 
-      function renderQuotes(episodes) {
-        const allQuotesDisplay = document.getElementById("allQuotesDisplay");
-        let quoteIndex = allQuotesDisplay.getElementsByTagName("li").length;
+          const quotesArray = [];
+          for (let i = 0; i < listItems.length; i++) {
+            const quoteText =
+              listItems[i].getElementsByTagName("p")[0].textContent;
+            const quoteAuthor = listItems[i]
+              .getElementsByTagName("p")[1]
+              .textContent.replace("— ", "");
+            quotesArray.push({ quoteText, quoteAuthor });
+          }
 
-        let quotesHTML = allQuotesDisplay.innerHTML;
-
-        for (let i = 0; i < episodes.length; i++) {
-          const episode = episodes[i];
-
-          for (let key in episode) {
-            if (key.startsWith("line_")) {
-              const line = episode[key];
-              const quoteText =
-                line && line.quote ? line.quote : "No quote available.";
-              const quoteAuthor =
-                line && line.character && line.character.name
-                  ? line.character.name
-                  : "Unknown";
-
-              quoteIndex++;
-              quotesHTML +=
-                "<li>" +
-                "<p><strong>" +
-                quoteIndex +
-                '.</strong> "' +
-                quoteText +
-                '"</p>' +
-                "<p>— " +
-                quoteAuthor +
-                "</p>" +
-                "</li>";
+          for (let i = 0; i < quotesArray.length - 1; i++) {
+            for (let j = i + 1; j < quotesArray.length; j++) {
+              if (
+                quotesArray[i].quoteAuthor.toLowerCase() >
+                quotesArray[j].quoteAuthor.toLowerCase()
+              ) {
+                const temp = quotesArray[i];
+                quotesArray[i] = quotesArray[j];
+                quotesArray[j] = temp;
+              }
             }
           }
-        }
 
-        allQuotesDisplay.innerHTML = quotesHTML;
-      }
-
-      function sortQuotes() {
-        const allQuotesDisplay = document.getElementById("allQuotesDisplay");
-        const listItems = Array.from(
-          allQuotesDisplay.getElementsByTagName("li")
-        );
-
-        const quotesArray = [];
-        for (let i = 0; i < listItems.length; i++) {
-          const quoteText =
-            listItems[i].getElementsByTagName("p")[0].textContent;
-          const quoteAuthor = listItems[i]
-            .getElementsByTagName("p")[1]
-            .textContent.replace("— ", "");
-          quotesArray.push({ quoteText, quoteAuthor });
-        }
-
-        for (let i = 0; i < quotesArray.length - 1; i++) {
-          for (let j = i + 1; j < quotesArray.length; j++) {
-            if (
-              quotesArray[i].quoteAuthor.toLowerCase() >
-              quotesArray[j].quoteAuthor.toLowerCase()
-            ) {
-              const temp = quotesArray[i];
-              quotesArray[i] = quotesArray[j];
-              quotesArray[j] = temp;
-            }
+          let sortedHTML = "";
+          for (let i = 0; i < quotesArray.length; i++) {
+            sortedHTML +=
+              "<li>" +
+              "<p><strong>" +
+              (i + 1) +
+              '.</strong> "' +
+              quotesArray[i].quoteText +
+              '"</p>' +
+              "<p>— " +
+              quotesArray[i].quoteAuthor +
+              "</p>" +
+              "</li>";
           }
+
+          allQuotesDisplay.innerHTML = sortedHTML;
+
+          const sortConfirmation = document.getElementById("sortConfirmation");
+          sortConfirmation.style.display = "block";
+          setTimeout(function () {
+            sortConfirmation.style.display = "none";
+          }, 3000);
         }
 
-        let sortedHTML = "";
-        for (let i = 0; i < quotesArray.length; i++) {
-          sortedHTML +=
-            "<li>" +
-            "<p><strong>" +
-            (i + 1) +
-            '.</strong> "' +
-            quotesArray[i].quoteText +
-            '"</p>' +
-            "<p>— " +
-            quotesArray[i].quoteAuthor +
-            "</p>" +
-            "</li>";
-        }
+        document
+          .getElementById("fetchAllQuotesButton")
+          .addEventListener("click", function () {
+            fetchQuotes("https://supernatural-api.onrender.com/quotes");
+            document.getElementById("fetchAllQuotesButton").style.display =
+              "none";
+          });
 
-        allQuotesDisplay.innerHTML = sortedHTML;
+        document
+          .getElementById("loadMoreButton")
+          .addEventListener("click", function () {
+            if (nextUrl) fetchQuotes(nextUrl);
+          });
 
-        const sortConfirmation = document.getElementById("sortConfirmation");
-        sortConfirmation.style.display = "block";
-        setTimeout(function () {
-          sortConfirmation.style.display = "none";
-        }, 3000);
-      }
-
-      document
-        .getElementById("fetchAllQuotesButton")
-        .addEventListener("click", function () {
-          fetchQuotes("https://supernatural-api.onrender.com/quotes");
-          document.getElementById("fetchAllQuotesButton").style.display =
-            "none";
-        });
-
-      document
-        .getElementById("loadMoreButton")
-        .addEventListener("click", function () {
-          if (nextUrl) fetchQuotes(nextUrl);
-        });
-
-      document
-        .getElementById("sortButton")
-        .addEventListener("click", function () {
-          sortQuotes();
-        });
-    </script>
+        document
+          .getElementById("sortButton")
+          .addEventListener("click", function () {
+            sortQuotes();
+          });
+      </script>
+    </div>
   </body>
 </html>

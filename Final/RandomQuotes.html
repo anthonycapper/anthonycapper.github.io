@@ -25,6 +25,7 @@
         background-attachment: fixed;
         background-size: cover;
         background-position: center center;
+        overflow: hidden;
       }
 
       .quote-box {
@@ -44,7 +45,6 @@
       .btn {
         background-color: darkgray;
       }
-      
     </style>
   </head>
   <body>
@@ -131,15 +131,15 @@
       </nav>
     </div>
 
-    <footer class="bg-black text-white text-center py-3 fixed-bottom">
+    <footer class="bg-dark text-white text-center py-3 fixed-bottom">
       <div class="container">
-        <span class="d-block" style="font-size: 1.1rem; font-weight: bold; letter-spacing: 1px;">
+        <span
+          style="font-size: 0.9rem; font-weight: bold; letter-spacing: 0.5px"
+        >
           Anthony Capper | FinalProject | Nov 23rd 2024
         </span>
       </div>
     </footer>
-    
-    
 
     <div class="container text-center" style="margin-top: 50px">
       <button id="fetchButton" class="btn btn-dark">Get a Random Quote</button>
