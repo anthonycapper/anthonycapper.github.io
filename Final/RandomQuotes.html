@@ -44,10 +44,6 @@
       .btn {
         background-color: darkgray;
       }
-
-      .navbar-collapse {
-        transition: all 0.3s ease;
-      }
     </style>
   </head>
   <body>
@@ -76,124 +72,115 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" style="gap: 15px; list-style: none">
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link active"
-                href="FinalProject.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Home</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="RandomQuotes.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Random Quote</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="AllQuotes.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >All Quotes</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="CharacterById.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Find a Character</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="EpisodeById.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Find an Episode</a
-              >
-            </li>
-          </ul>
-        </div>
-
-        <footer class="bg-dark text-white text-center py-3 fixed-bottom">
-          <div class="container">
-            <span
+        <ul class="navbar-nav" style="gap: 15px; list-style: none">
+          <li class="nav-item btn btn-hover shadow-lg">
+            <a
+              class="nav-link active"
+              href="FinalProject.html"
               style="
-                font-size: 0.9rem;
+                color: black;
+                font-size: 1.5rem;
                 font-weight: bold;
-                letter-spacing: 0.5px;
+                font-family: Didot, serif;
               "
+              >Home</a
             >
-              Anthony Capper | FinalProject | Nov 23rd 2024
-            </span>
-          </div>
-        </footer>
-
-        <div class="container text-center" style="margin-top: 50px">
-          <button id="fetchButton" class="btn btn-dark">
-            Get a Random Quote
-          </button>
-          <div id="quoteDisplay" class="quote-box"></div>
-        </div>
-
-        <script>
-          async function fetchRandomQuote() {
-            const url = "https://supernatural-api.onrender.com/quotes/random";
-            const response = await fetch(url);
-
-            if (response.ok) {
-              const quoteObj = await response.json();
-              console.log(JSON.stringify(quoteObj, null, 2));
-
-              const quoteText = quoteObj.line_0?.quote || "No quote available.";
-              const quoteAuthor =
-                quoteObj?.line_0?.character?.name || "Unknown";
-
-              const quoteDisplay = document.getElementById("quoteDisplay");
-              quoteDisplay.innerHTML =
-                '<p>"' + quoteText + '"</p>' + "<p>— " + quoteAuthor + "</p>";
-            } else {
-              document.getElementById("quoteDisplay").innerHTML =
-                "Try again, something went wrong.";
-            }
-          }
-
-          document
-            .getElementById("fetchButton")
-            .addEventListener("click", fetchRandomQuote);
-        </script>
+          </li>
+          <li class="nav-item btn btn-hover shadow-lg">
+            <a
+              class="nav-link"
+              href="RandomQuotes.html"
+              style="
+                color: black;
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: Didot, serif;
+              "
+              >Random Quote</a
+            >
+          </li>
+          <li class="nav-item btn btn-hover shadow-lg">
+            <a
+              class="nav-link"
+              href="AllQuotes.html"
+              style="
+                color: black;
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: Didot, serif;
+              "
+              >All Quotes</a
+            >
+          </li>
+          <li class="nav-item btn btn-hover shadow-lg">
+            <a
+              class="nav-link"
+              href="CharacterById.html"
+              style="
+                color: black;
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: Didot, serif;
+              "
+              >Find a Character</a
+            >
+          </li>
+          <li class="nav-item btn btn-hover shadow-lg">
+            <a
+              class="nav-link"
+              href="EpisodeById.html"
+              style="
+                color: black;
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: Didot, serif;
+              "
+              >Find an Episode</a
+            >
+          </li>
+        </ul>
       </nav>
     </div>
+
+    <footer class="bg-dark text-white text-center py-3 fixed-bottom">
+      <div class="container">
+        <span
+          style="font-size: 0.9rem; font-weight: bold; letter-spacing: 0.5px"
+        >
+          Anthony Capper | FinalProject | Nov 23rd 2024
+        </span>
+      </div>
+    </footer>
+
+    <div class="container text-center" style="margin-top: 50px">
+      <button id="fetchButton" class="btn btn-dark">Get a Random Quote</button>
+      <div id="quoteDisplay" class="quote-box"></div>
+    </div>
+
+    <script>
+      async function fetchRandomQuote() {
+        const url = "https://supernatural-api.onrender.com/quotes/random";
+        const response = await fetch(url);
+
+        if (response.ok) {
+          const quoteObj = await response.json();
+          console.log(JSON.stringify(quoteObj, null, 2));
+
+          const quoteText = quoteObj.line_0?.quote || "No quote available.";
+          const quoteAuthor = quoteObj?.line_0?.character?.name || "Unknown";
+
+          const quoteDisplay = document.getElementById("quoteDisplay");
+          quoteDisplay.innerHTML =
+            '<p>"' + quoteText + '"</p>' + "<p>— " + quoteAuthor + "</p>";
+        } else {
+          document.getElementById("quoteDisplay").innerHTML =
+            "Try again, something went wrong.";
+        }
+      }
+
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", fetchRandomQuote);
+    </script>
   </body>
 </html>
