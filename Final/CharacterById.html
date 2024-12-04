@@ -54,101 +54,88 @@
   <body>
     <body>
       <div
-      class="container container-fluid b-3"
-      style="justify-items: center; border-radius: 10px"
-    >
-      <nav
-        class="navbar navbar-expand-lg"
-        style="
-          background-color: transparent;
-          margin-top: 20px;
-          position: relative;
-          left: 20px;
-        "
+        class="container container-fluid b-3"
+        style="justify-items: center; border-radius: 10px"
       >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+        <nav
+          class="navbar navbar-expand-lg"
+          style="
+            background-color: transparent;
+            margin-top: 20px;
+            position: relative;
+            left: 20px;
+          "
         >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" style="gap: 15px; list-style: none">
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link active"
-                href="FinalProject.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Home</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="RandomQuotes.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Random Quote</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="AllQuotes.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >All Quotes</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="CharacterById.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Find a Character</a
-              >
-            </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="EpisodeById.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Find an Episode</a
-              >
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" style="gap: 15px; list-style: none">
+              <li class="nav-item btn btn-hover shadow-lg">
+                <a
+                  class="nav-link active"
+                  href="FinalProject.html"
+                  style="
+                    color: black;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    font-family: Didot, serif;
+                  "
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item btn btn-hover shadow-lg">
+                <a
+                  class="nav-link"
+                  href="RandomQuotes.html"
+                  style="
+                    color: black;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    font-family: Didot, serif;
+                  "
+                  >Random Quote</a
+                >
+              </li>
+              <li class="nav-item btn btn-hover shadow-lg">
+                <a
+                  class="nav-link"
+                  href="AllQuotes.html"
+                  style="
+                    color: black;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    font-family: Didot, serif;
+                  "
+                  >All Quotes</a
+                >
+              </li>
+              <li class="nav-item btn btn-hover shadow-lg">
+                <a
+                  class="nav-link"
+                  href="CharacterById.html"
+                  style="
+                    color: black;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    font-family: Didot, serif;
+                  "
+                  >Find a Character</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
 
       <body>
         <div class="container text-center mt-5">
@@ -226,9 +213,31 @@
                 if (response.ok) {
                   const data = await response.json();
                   for (let i = 0; i < data.data.length; i++) {
-                    allCharacters.push(data.data[i]);
-                    const firstLetter = data.data[i].name[0].toLowerCase();
-                    loadedLetters[firstLetter] = true;
+                    let character = data.data[i];
+                    allCharacters[allCharacters.length] = character;
+
+                    let firstLetter = character.name[0];
+                    let lowerFirstLetter = "";
+
+                    for (let j = 0; j < firstLetter.length; j++) {
+                      let char = firstLetter[j];
+                      let lowerChar = "";
+                      if (char >= "A" && char <= "Z") {
+                        let upperCaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        let lowerCaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+                        for (let k = 0; k < upperCaseAlphabet.length; k++) {
+                          if (char === upperCaseAlphabet[k]) {
+                            lowerChar = lowerCaseAlphabet[k];
+                            break;
+                          }
+                        }
+                      } else {
+                        lowerChar = char;
+                      }
+                      lowerFirstLetter += lowerChar;
+                    }
+
+                    loadedLetters[lowerFirstLetter] = true;
                   }
                   url = data.next;
                 } else {
@@ -241,32 +250,99 @@
           }
 
           function handleSearchInput() {
-            const inputElement = document.getElementById("characterInput");
-            const query = inputElement.value.toLowerCase();
-            const dropdown = document.getElementById("characterDropdown");
+            let inputElement = document.getElementById("characterInput");
+            let query = inputElement.value;
+
+            let lowerQuery = "";
+            for (let i = 0; i < query.length; i++) {
+              let char = query[i];
+              let lowerChar = "";
+              if (char >= "A" && char <= "Z") {
+                let upperCaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                let lowerCaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+                for (let j = 0; j < upperCaseAlphabet.length; j++) {
+                  if (char === upperCaseAlphabet[j]) {
+                    lowerChar = lowerCaseAlphabet[j];
+                    break;
+                  }
+                }
+              } else {
+                lowerChar = char;
+              }
+              lowerQuery += lowerChar;
+            }
+
+            let dropdown = document.getElementById("characterDropdown");
             let dropdownContent = "";
 
-            if (query === "") {
+            if (lowerQuery === "") {
               dropdown.style.display = "none";
               return;
             }
 
-            const firstLetter = query[0];
+            let firstLetter = lowerQuery[0];
             if (!loadedLetters[firstLetter]) {
+              let upperFirstLetter = "";
+              for (let i = 0; i < firstLetter.length; i++) {
+                let char = firstLetter[i];
+                let upperChar = "";
+                if (char >= "a" && char <= "z") {
+                  let upperCaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                  let lowerCaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+                  for (let j = 0; j < lowerCaseAlphabet.length; j++) {
+                    if (char === lowerCaseAlphabet[j]) {
+                      upperChar = upperCaseAlphabet[j];
+                      break;
+                    }
+                  }
+                } else {
+                  upperChar = char;
+                }
+                upperFirstLetter += upperChar;
+              }
+
               dropdownContent =
                 '<div class="list-group-item" style="color: blue;">Loading characters for "' +
-                firstLetter.toUpperCase() +
+                upperFirstLetter +
                 '"...</div>';
               dropdown.innerHTML = dropdownContent;
               dropdown.style.display = "block";
               return;
             }
 
-            const filtered = [];
+            let filtered = [];
             for (let i = 0; i < allCharacters.length; i++) {
-              const nameLower = allCharacters[i].name.toLowerCase();
-              if (nameLower.indexOf(query) === 0) {
-                filtered.push(allCharacters[i]);
+              let name = allCharacters[i].name;
+              let nameLower = "";
+
+              for (let j = 0; j < name.length; j++) {
+                let char = name[j];
+                let lowerChar = "";
+                if (char >= "A" && char <= "Z") {
+                  let upperCaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                  let lowerCaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+                  for (let k = 0; k < upperCaseAlphabet.length; k++) {
+                    if (char === upperCaseAlphabet[k]) {
+                      lowerChar = lowerCaseAlphabet[k];
+                      break;
+                    }
+                  }
+                } else {
+                  lowerChar = char;
+                }
+                nameLower += lowerChar;
+              }
+
+              let match = true;
+              for (let k = 0; k < lowerQuery.length; k++) {
+                if (nameLower[k] !== lowerQuery[k]) {
+                  match = false;
+                  break;
+                }
+              }
+
+              if (match) {
+                filtered[filtered.length] = allCharacters[i];
               }
             }
 
@@ -300,13 +376,13 @@
           }
 
           async function fetchCharacterById() {
-            const id = document.getElementById("fetchCharacterButton").dataset
-              .id;
+            let id = document.getElementById("fetchCharacterButton").dataset.id;
             if (!id) {
               document.getElementById("characterDisplay").innerHTML =
                 "Please select a character.";
               return;
             }
+
             try {
               const response = await fetch(apiUrl + "/" + id);
               if (response.ok) {
@@ -322,23 +398,13 @@
             }
           }
 
-          function arrayToString(array) {
-            let result = "";
-            for (let i = 0; i < array.length; i++) {
-              result += array[i];
-              if (i < array.length - 1) {
-                result += ", ";
-              }
-            }
-            return result;
-          }
-
           function displayCharacter(character) {
-            const displayElement = document.getElementById("characterDisplay");
+            let displayElement = document.getElementById("characterDisplay");
             let html =
               '<div class="card shadow-lg" style="background-color: rgba(0, 0, 0, 0.7); color: white; border-radius: 10px; padding: 20px;">';
             html += '<div class="card-body">';
             html += '<h3 class="card-title">' + character.name + "</h3>";
+
             if (character.img) {
               html +=
                 '<img src="' +
@@ -347,38 +413,48 @@
                 character.name +
                 '" class="img-fluid mb-3" style="max-height: 200px;" />';
             }
+
             if (character.actor) {
-              html +=
-                "<p><strong>Actor:</strong> " +
-                arrayToString(character.actor) +
-                "</p>";
+              html += "<p><strong>Actor:</strong> ";
+              for (let i = 0; i < character.actor.length; i++) {
+                html += character.actor[i];
+                if (i < character.actor.length - 1) {
+                  html += ", ";
+                }
+              }
+              html += "</p>";
             } else {
               html += "<p><strong>Actor:</strong> Unknown</p>";
             }
+
             if (character.location) {
               html +=
                 "<p><strong>Location:</strong> " + character.location + "</p>";
             } else {
               html += "<p><strong>Location:</strong> Unknown</p>";
             }
+
             if (character.occupation) {
-              html +=
-                "<p><strong>Occupation:</strong> " +
-                arrayToString(character.occupation) +
-                "</p>";
+              html += "<p><strong>Occupation:</strong> ";
+              for (let i = 0; i < character.occupation.length; i++) {
+                html += character.occupation[i];
+                if (i < character.occupation.length - 1) {
+                  html += ", ";
+                }
+              }
+              html += "</p>";
             } else {
               html += "<p><strong>Occupation:</strong> Unknown</p>";
             }
+
             html += "</div></div>";
             displayElement.innerHTML = html;
           }
 
-          document
-            .getElementById("characterInput")
-            .addEventListener("input", handleSearchInput);
-          document
-            .getElementById("fetchCharacterButton")
-            .addEventListener("click", fetchCharacterById);
+          document.getElementById("characterInput").oninput = handleSearchInput;
+          document.getElementById("fetchCharacterButton").onclick =
+            fetchCharacterById;
+
           fetchAllCharacters();
         </script>
       </body>

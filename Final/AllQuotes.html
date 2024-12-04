@@ -54,10 +54,10 @@
         list-style: none;
       }
 
-      li {
-        margin-bottom: 10px;
-        display: flex;
-        align-items: baseline;
+      ol {
+        list-style: decimal inside;
+        padding: 0;
+        margin: 0;
       }
 
       .navbar-toggler {
@@ -153,19 +153,6 @@
                 >Find a Character</a
               >
             </li>
-            <li class="nav-item btn btn-hover shadow-lg">
-              <a
-                class="nav-link"
-                href="EpisodeById.html"
-                style="
-                  color: black;
-                  font-size: 1.5rem;
-                  font-weight: bold;
-                  font-family: Didot, serif;
-                "
-                >Find an Episode</a
-              >
-            </li>
           </ul>
         </div>
       </nav>
@@ -199,7 +186,7 @@
           Quotes sorted alphabetically!
         </p>
       </div>
-      <div id="allQuotesDisplay" class="quote-box"></div>
+      <ol id="allQuotesDisplay" class="quote-box"></ol>
       <div
         class="d-flex justify-content-center"
         style="margin-top: 10px; margin-bottom: 80px"
@@ -210,141 +197,168 @@
       </div>
 
       <script>
+        const url = "https://supernatural-api.onrender.com/quotes";
         let nextUrl = null;
         let allQuotes = [];
+        let isSorted = false;
 
-        async function fetchQuotes(url) {
-          const response = await fetch(url);
+        async function fetchQuotes(fetchUrl) {
+          const response = await fetch(fetchUrl);
 
           if (response.ok) {
             const result = await response.json();
             const episodes = result.data || [];
             nextUrl = result.next || null;
 
-            allQuotes = allQuotes.concat(episodes);
+            for (let i = 0; i < episodes.length; i++) {
+              allQuotes[allQuotes.length] = episodes[i];
+            }
+            isSorted = false;
 
-            const loadMoreButton = document.getElementById("loadMoreButton");
-            loadMoreButton.style.display = nextUrl ? "block" : "none";
-
-            renderQuotes(episodes);
-          } else {
-            console.error(
-              "Failed to fetch quotes. HTTP Status:",
-              response.status
-            );
+            document.getElementById("loadMoreButton").style.display = nextUrl
+              ? "block"
+              : "none";
+            renderQuotes(allQuotes);
           }
         }
 
-        function renderQuotes(episodes) {
+        function renderQuotes(quotes) {
           const allQuotesDisplay = document.getElementById("allQuotesDisplay");
-          let quoteIndex = allQuotesDisplay.getElementsByTagName("li").length;
+          allQuotesDisplay.innerHTML = "";
 
-          let quotesHTML = allQuotesDisplay.innerHTML;
+          for (let i = 0; i < quotes.length; i++) {
+            const quote = quotes[i];
 
-          for (let i = 0; i < episodes.length; i++) {
-            const episode = episodes[i];
+            for (let key in quote) {
+              let linePrefix = "";
+              for (let j = 0; j < 5; j++) {
+                linePrefix += key[j];
+              }
+              if (linePrefix === "line_") {
+                const line = quote[key];
+                let quoteText = "No quote available.";
 
-            for (let key in episode) {
-              if (key.startsWith("line_")) {
-                const line = episode[key];
-                const quoteText =
-                  line && line.quote ? line.quote : "No quote available.";
-                const quoteAuthor =
-                  line && line.character && line.character.name
-                    ? line.character.name
-                    : "Unknown";
+                if (line && line.quote) {
+                  let text = "";
+                  for (let j = 0; j < line.quote.length; j++) {
+                    if (line.quote[j] !== '"') text += line.quote[j];
+                  }
+                  quoteText = text;
+                }
 
-                quoteIndex++;
-                quotesHTML +=
-                  "<li>" +
-                  "<p><strong>" +
-                  quoteIndex +
-                  '.</strong> "' +
+                let quoteAuthor = "Unknown";
+                if (line && line.character && line.character.name) {
+                  quoteAuthor = line.character.name;
+                }
+
+                allQuotesDisplay.innerHTML +=
+                  '<li><p>"' +
                   quoteText +
-                  '"</p>' +
-                  "<p>— " +
+                  '"</p><p>— ' +
                   quoteAuthor +
-                  "</p>" +
-                  "</li>";
+                  "</p></li>";
               }
             }
           }
-
-          allQuotesDisplay.innerHTML = quotesHTML;
         }
 
         function sortQuotes() {
+          if (isSorted) return;
+
           const allQuotesDisplay = document.getElementById("allQuotesDisplay");
-          const listItems = Array.from(
-            allQuotesDisplay.getElementsByTagName("li")
-          );
+          const listItems = allQuotesDisplay.children;
 
           const quotesArray = [];
           for (let i = 0; i < listItems.length; i++) {
-            const quoteText =
-              listItems[i].getElementsByTagName("p")[0].textContent;
-            const quoteAuthor = listItems[i]
-              .getElementsByTagName("p")[1]
-              .textContent.replace("— ", "");
-            quotesArray.push({ quoteText, quoteAuthor });
-          }
+            const paragraphs = listItems[i].children;
 
-          for (let i = 0; i < quotesArray.length - 1; i++) {
-            for (let j = i + 1; j < quotesArray.length; j++) {
-              if (
-                quotesArray[i].quoteAuthor.toLowerCase() >
-                quotesArray[j].quoteAuthor.toLowerCase()
-              ) {
-                const temp = quotesArray[i];
-                quotesArray[i] = quotesArray[j];
-                quotesArray[j] = temp;
+            let quoteText = "";
+            const originalText = paragraphs[0].textContent;
+            for (let j = 0; j < originalText.length; j++) {
+              if (originalText[j] !== '"') quoteText += originalText[j];
+            }
+
+            let quoteAuthor = "Unknown";
+            const originalAuthor = paragraphs[1].textContent;
+
+            if (originalAuthor[0] === "—" && originalAuthor[1] === " ") {
+              quoteAuthor = "";
+              for (let k = 2; k < originalAuthor.length; k++) {
+                quoteAuthor += originalAuthor[k];
               }
             }
+
+            const quote = { quoteText, quoteAuthor };
+            let position = quotesArray.length;
+
+            for (let m = 0; m < quotesArray.length; m++) {
+              let authorA = "";
+              for (let x = 0; x < quotesArray[m].quoteAuthor.length; x++) {
+                let char = quotesArray[m].quoteAuthor[x];
+                if (char >= "A" && char <= "Z") {
+                  for (let n = 0; n < 26; n++) {
+                    if (char === "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[n]) {
+                      char = "abcdefghijklmnopqrstuvwxyz"[n];
+                      break;
+                    }
+                  }
+                }
+                authorA += char;
+              }
+
+              let authorB = "";
+              for (let y = 0; y < quote.quoteAuthor.length; y++) {
+                let char = quote.quoteAuthor[y];
+                if (char >= "A" && char <= "Z") {
+                  for (let n = 0; n < 26; n++) {
+                    if (char === "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[n]) {
+                      char = "abcdefghijklmnopqrstuvwxyz"[n];
+                      break;
+                    }
+                  }
+                }
+                authorB += char;
+              }
+
+              if (authorA > authorB) {
+                position = m;
+                break;
+              }
+            }
+
+            for (let n = quotesArray.length; n > position; n--) {
+              quotesArray[n] = quotesArray[n - 1];
+            }
+            quotesArray[position] = quote;
           }
 
-          let sortedHTML = "";
+          allQuotesDisplay.innerHTML = "";
           for (let i = 0; i < quotesArray.length; i++) {
-            sortedHTML +=
-              "<li>" +
-              "<p><strong>" +
-              (i + 1) +
-              '.</strong> "' +
+            allQuotesDisplay.innerHTML +=
+              '<li><p>"' +
               quotesArray[i].quoteText +
-              '"</p>' +
-              "<p>— " +
+              '"</p><p>— ' +
               quotesArray[i].quoteAuthor +
-              "</p>" +
-              "</li>";
+              "</p></li>";
           }
 
-          allQuotesDisplay.innerHTML = sortedHTML;
-
-          const sortConfirmation = document.getElementById("sortConfirmation");
-          sortConfirmation.style.display = "block";
-          setTimeout(function () {
-            sortConfirmation.style.display = "none";
-          }, 3000);
+          isSorted = true;
+          document.getElementById("sortConfirmation").style.display = "block";
         }
 
-        document
-          .getElementById("fetchAllQuotesButton")
-          .addEventListener("click", function () {
-            fetchQuotes("https://supernatural-api.onrender.com/quotes");
-            document.getElementById("fetchAllQuotesButton").style.display =
-              "none";
-          });
+        document.getElementById("fetchAllQuotesButton").onclick = function () {
+          fetchQuotes(url);
+          document.getElementById("fetchAllQuotesButton").style.display =
+            "none";
+        };
 
-        document
-          .getElementById("loadMoreButton")
-          .addEventListener("click", function () {
-            if (nextUrl) fetchQuotes(nextUrl);
-          });
+        document.getElementById("loadMoreButton").onclick = function () {
+          if (nextUrl) fetchQuotes(nextUrl);
+        };
 
-        document
-          .getElementById("sortButton")
-          .addEventListener("click", function () {
-            sortQuotes();
-          });
+        document.getElementById("sortButton").onclick = function () {
+          sortQuotes();
+        };
       </script>
     </div>
   </body>
